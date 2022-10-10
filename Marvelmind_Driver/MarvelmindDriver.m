@@ -42,7 +42,7 @@ classdef MarvelmindDriver < realtime.internal.SourceSampleTime & ...
             else
                 % Call C-function implementing device initialization
                 coder.cinclude('MarvelmindDriver.h');
-                coder.ceval('MarvelmindDriver_init', int8(obj.serialID));
+                coder.ceval('MarvelmindDriver_Init', int8(obj.serialID));
             end
         end
         
@@ -56,7 +56,7 @@ classdef MarvelmindDriver < realtime.internal.SourceSampleTime & ...
                 % Place simulation output code here
             else
                 % Call C-function implementing device output
-                coder.ceval('MarvelmindDriver_step', coder.wref(updated), coder.wref(d1), coder.wref(d2), coder.wref(d3), coder.wref(d4));
+                coder.ceval('MarvelmindDriver_Step', coder.wref(updated), coder.wref(d1), coder.wref(d2), coder.wref(d3), coder.wref(d4));
             end
         end
         

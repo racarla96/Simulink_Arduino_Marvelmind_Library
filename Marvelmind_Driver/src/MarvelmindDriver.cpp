@@ -7,7 +7,7 @@
 Stream * _HardSerial; // member within class
 
 MarvelmindHedge hedge;
-RawDistances rawDs;
+RawDistancesPro rDistancesP;
 
 #define BAUDRATE 115200
 
@@ -34,7 +34,7 @@ extern "C" void MarvelmindDriver_Init(int8_t serialID)
         Serial3.begin(BAUDRATE);
         _HardSerial = &Serial3;
     }
-
+    
     hedge.begin(_HardSerial);
 } 
 extern "C" void MarvelmindDriver_Step(int8_t *updated, uint32_t *d1, uint32_t *d2, uint32_t *d3, uint32_t *d4) 
@@ -42,12 +42,12 @@ extern "C" void MarvelmindDriver_Step(int8_t *updated, uint32_t *d1, uint32_t *d
     *updated = 0;
     hedge.read(); // Update the information of the Serial
     
-    if(hedge.getRawDistancesFromMarvelmindHedge(&rawDs)){
+    if(hedge.getRawDistancesFromMarvelmindHedge(true, &rDistancesP)){
         *updated = 1;
-        *d1 = rawDs.distances[0].distance;
-        *d2 = rawDs.distances[1].distance;
-        *d3 = rawDs.distances[2].distance;
-        *d4 = rawDs.distances[3].distance;
+        *d1 = (uint32_t) (rDistancesP.distances[0] * 1000.f);
+        *d2 = (uint32_t) (rDistancesP.distances[1] * 1000.f);
+        *d3 = (uint32_t) (rDistancesP.distances[2] * 1000.f);
+        *d4 = (uint32_t) (rDistancesP.distances[3] * 1000.f);
     }
 } 
 extern "C" void MarvelmindDriver_Terminate() 
